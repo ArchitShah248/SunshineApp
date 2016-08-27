@@ -22,14 +22,14 @@
     <uses-permission android:name="com.portfolio.archit.weathermaster.permission.C2D_MESSAGE"/>
 
     <application
+        android:name=".ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".ApplicationClass"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.portfolio.archit.weathermaster.MainActivity"
+            android:name=".MainActivity"
             android:theme="@style/AppTheme.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -38,18 +38,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.portfolio.archit.weathermaster.DetailActivity"
+            android:name=".DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName="com.portfolio.archit.weathermaster.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.Details">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.portfolio.archit.weathermaster.MainActivity"/>
         </activity>
         <activity
-            android:name="com.portfolio.archit.weathermaster.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="com.portfolio.archit.weathermaster.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/SettingsTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -57,13 +57,13 @@
         </activity>
 
         <provider
-            android:name="com.portfolio.archit.weathermaster.data.WeatherProvider"
+            android:name=".data.WeatherProvider"
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true"/>
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name="com.portfolio.archit.weathermaster.sync.SunshineAuthenticatorService">
+        <service android:name=".sync.SunshineAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
@@ -75,7 +75,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name="com.portfolio.archit.weathermaster.sync.SunshineSyncService"
+            android:name=".sync.SunshineSyncService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter"/>
@@ -100,26 +100,26 @@
         </receiver>
 
         <service
-            android:name="com.portfolio.archit.weathermaster.gcm.MyGcmListenerService"
+            android:name=".gcm.MyGcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
             </intent-filter>
         </service>
         <service
-            android:name="com.portfolio.archit.weathermaster.gcm.MyInstanceIDListenerService"
+            android:name=".gcm.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
         <service
-            android:name="com.portfolio.archit.weathermaster.gcm.RegistrationIntentService"
+            android:name=".gcm.RegistrationIntentService"
             android:exported="false">
         </service>
 
         <receiver
-            android:name="com.portfolio.archit.weathermaster.widget.TodayWidgetProvider"
+            android:name=".widget.TodayWidgetProvider"
             android:label="@string/title_widget_today">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -130,37 +130,43 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/today_widget_provider_info"/>
         </receiver>
-        <service android:name="com.portfolio.archit.weathermaster.widget.TodayWidgetIntentService"/>
+
+        <service android:name=".widget.TodayWidgetIntentService"/>
 
         <receiver
-            android:name="com.portfolio.archit.weathermaster.widget.DetailWidgetProvider"
+            android:name=".widget.DetailWidgetProvider"
             android:enabled="@bool/widget_detail_enabled"
             android:label="@string/title_widget_detail">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="com.example.android.sunshine.app.ACTION_DATA_UPDATED"/>
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_detail"/>
         </receiver>
+
         <service
-            android:name="com.portfolio.archit.weathermaster.widget.DetailWidgetRemoteViewsService"
+            android:name=".widget.DetailWidgetRemoteViewsService"
             android:enabled="@bool/widget_detail_enabled"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <!-- Muzei Extension -->
-        <service android:name="com.portfolio.archit.weathermaster.muzei.WeatherMuzeiSource"
-                 android:icon="@drawable/ic_muzei"
-                 android:label="@string/app_name"
-                 android:description="@string/muzei_description" >
+        <service
+            android:name=".muzei.WeatherMuzeiSource"
+            android:description="@string/muzei_description"
+            android:icon="@drawable/ic_muzei"
+            android:label="@string/app_name">
             <intent-filter>
-                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
             </intent-filter>
-            <meta-data android:name="color" android:value="@color/primary" />
-        </service>
 
+            <meta-data
+                android:name="color"
+                android:value="@color/primary"/>
+        </service>
     </application>
 
 </manifest>

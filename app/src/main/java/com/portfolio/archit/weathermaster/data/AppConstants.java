@@ -5,6 +5,6 @@ package com.portfolio.archit.weathermaster.data;
  */
 public final class AppConstants {
 
-    public static final String OPEN_WEATHER_MAP_API_KEY = "YOUR OPEN WEATHER API KEY";
+    public static final String OPEN_WEATHER_MAP_API_KEY = "50223ff20c4a8f8593f0ebec27aad9c8";
 
 }
