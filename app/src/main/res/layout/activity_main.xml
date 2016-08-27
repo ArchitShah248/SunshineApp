@@ -1,0 +1,10 @@
+<fragment android:id="@+id/fragment_forecast"
+          android:name="com.portfolio.archit.weathermaster.ForecastFragment"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:app="http://schemas.android.com/apk/res-auto"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          app:sharedElementTransitions="true"
+          tools:context="com.portfolio.archit.weathermaster.MainActivity"
+          tools:layout="@android:layout/list_content"/>

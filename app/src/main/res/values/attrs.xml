@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomCompassView">
+        <attr name="textsize" format="dimension"/>
+        <attr name="ring_stroke_width" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="LocationEditTextPreferences">
+        <attr name="minLength" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="ForecastFragment">
+        <attr name="android:choiceMode" />
+        <attr name="autoSelectView" format="boolean"/>
+        <attr name="sharedElementTransitions" format="boolean"/>
+    </declare-styleable>
+</resources>

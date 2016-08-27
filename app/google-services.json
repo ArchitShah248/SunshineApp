@@ -1,0 +1,61 @@
+{
+  "project_info": {
+    "project_number": "651739817721",
+    "project_id": "udacity-sunshineapp"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651739817721:android:de991b41294fb6a0",
+        "android_client_info": {
+          "package_name": "com.portfolio.archit.mysunshineapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqUPikMlbxEnJ3LOY9DTDtNgUfC6QnFj8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651739817721:android:3697aa26b829e99b",
+        "android_client_info": {
+          "package_name": "com.portfolio.archit.weathermaster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqUPikMlbxEnJ3LOY9DTDtNgUfC6QnFj8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
