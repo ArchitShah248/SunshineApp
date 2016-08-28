@@ -14,7 +14,7 @@ public class ApplicationClass extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if (AppConstants.OPEN_WEATHER_MAP_API_KEY.equalsIgnoreCase("YOUR OPEN WEATHER API KEY")) {
+        if (AppConstants.OPEN_WEATHER_MAP_API_KEY.equalsIgnoreCase(AppConstants.YOUR_OPEN_WEATHER_API_KEY)) {
             Toast.makeText(ApplicationClass.this, "Please enter your ' Open Weather ' API key in " + AppConstants.class.getSimpleName() + ".java file.", Toast.LENGTH_LONG).show();
         }
     }
