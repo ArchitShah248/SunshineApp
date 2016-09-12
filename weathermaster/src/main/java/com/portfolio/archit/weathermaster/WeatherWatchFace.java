@@ -111,6 +111,7 @@ public class WeatherWatchFace extends CanvasWatchFaceService {
         Paint mBackgroundPaint;
         Paint mTextPaint;
         boolean mAmbient;
+        boolean isShownFirstTime = true;
 
         Time mTime;
         final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
