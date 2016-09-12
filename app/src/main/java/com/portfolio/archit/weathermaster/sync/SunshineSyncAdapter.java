@@ -23,25 +23,36 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.format.Time;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.Asset;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
 import com.portfolio.archit.weathermaster.MainActivity;
 import com.portfolio.archit.weathermaster.R;
-import com.portfolio.archit.weathermaster.utils.Utility;
 import com.portfolio.archit.weathermaster.data.AppConstants;
 import com.portfolio.archit.weathermaster.data.AppURLs;
 import com.portfolio.archit.weathermaster.database.WeatherContract;
 import com.portfolio.archit.weathermaster.muzei.WeatherMuzeiSource;
+import com.portfolio.archit.weathermaster.utils.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -53,15 +64,16 @@ import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 
-public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
+public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
+    private static final String TAG = SunshineSyncAdapter.class.getSimpleName();
     public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
 
     public static final String ACTION_DATA_UPDATED = "com.portfolio.archit.weathermaster.ACTION_DATA_UPDATED";
 
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
-    public static final int SYNC_INTERVAL = 60 * 180;
+    public static final int SYNC_INTERVAL = 10;//60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
 
@@ -88,10 +100,13 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int LOCATION_STATUS_UNKNOWN = 3;
     public static final int LOCATION_STATUS_INVALID = 4;
 
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({LOCATION_STATUS_OK, LOCATION_STATUS_SERVER_DOWN, LOCATION_STATUS_SERVER_INVALID, LOCATION_STATUS_UNKNOWN, LOCATION_STATUS_INVALID})
     public @interface LocationStatus {
     }
+
+    private GoogleApiClient mGoogleApiClient;
 
     public SunshineSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -101,6 +116,8 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "onPerformSync Called.");
+
+        setUpGoogleClient();
 
         String locationQuery = Utility.getPreferredLocation(getContext());
 
@@ -229,7 +246,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * Take the String representing the complete forecast in JSON Format and
      * pull out the data we need to construct the Strings needed for the wireframes.
-     * <p/>
+     * <p>
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
@@ -394,9 +411,9 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         notifyWeather();
         updateWidgets();
         updateMuzei();
+        updateWearable();
 
     }
-
 
     /**
      * Helper method to handle insertion of a new location in the weather database.
@@ -615,5 +632,114 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             context.startService(new Intent(ACTION_DATA_UPDATED).setClass(context, WeatherMuzeiSource.class));
         }
     }
+
+
+    //Wearable setup
+    private void setUpGoogleClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Wearable.API)
+                .build();
+        if(mGoogleApiClient != null){
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.d(LOG_TAG, "Google client connected");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d(LOG_TAG, "Google client connection suspended");
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(LOG_TAG, "Google client connection failed");
+
+    }
+
+    /**
+     * Builds an {@link com.google.android.gms.wearable.Asset} from a bitmap. The image that we get
+     * back from the camera in "data" is a thumbnail size. Typically, your image should not exceed
+     * 320x320 and if you want to have zoom and parallax effect in your app, limit the size of your
+     * image to 640x400. Resize your image before transferring to your wearable device.
+     */
+    private static Asset toAsset(Bitmap bitmap) {
+        ByteArrayOutputStream byteStream = null;
+        try {
+            byteStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
+            return Asset.createFromBytes(byteStream.toByteArray());
+        } finally {
+            if (null != byteStream) {
+                try {
+                    byteStream.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
+        }
+    }
+
+    private void updateWearable() {
+
+        Log.d(TAG,"Update wearable called");
+        String locationQuery = Utility.getPreferredLocation(getContext());
+
+        Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, System.currentTimeMillis());
+
+        // reusing Notify Weather Projection here but choosing to ignore the description value pulled
+        // ie, we don't place it within the DataMap for syncing later
+        Cursor cursor = getContext().getContentResolver().query(weatherUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
+
+        if(cursor.moveToFirst()) {
+            //We are the position 0, defaulted to today's weather and temperatures from mobile
+            int weatherId = cursor.getInt(INDEX_WEATHER_ID);
+            double high = cursor.getDouble(INDEX_MAX_TEMP);
+            double low = cursor.getDouble(INDEX_MIN_TEMP);
+
+            int artIcon = Utility.getArtResourceForWeatherCondition(weatherId);
+            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), artIcon);
+            Asset toDataMapAsset = toAsset(bitmap);
+
+            PutDataMapRequest sendRequest = PutDataMapRequest.create(getContext().getString(R.string.data_path));
+            sendRequest.getDataMap().putString(getContext().getString(R.string.high_key), Utility.formatTemperature(getContext(), high));
+            sendRequest.getDataMap().putString(getContext().getString(R.string.low_key), Utility.formatTemperature(getContext(), low));
+            sendRequest.getDataMap().putAsset(getContext().getString(R.string.asset_key), toDataMapAsset);
+            //The following is an extra item that ensures that dataChanged on the watch side always gets called
+            sendRequest.getDataMap().putLong(getContext().getString(R.string.time_key), System.currentTimeMillis());
+
+            PutDataRequest sendDataRequest = sendRequest.asPutDataRequest().setUrgent();
+
+            Wearable.DataApi.putDataItem(mGoogleApiClient, sendDataRequest)
+                    .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
+                        @Override
+                        public void onResult(DataApi.DataItemResult dataItemResult) {
+                            if(dataItemResult.getStatus().isSuccess()) {
+                                Log.d(LOG_TAG, "PutDataRequest was successful. " +
+                                        "Status Code : " + dataItemResult.getStatus().getStatusCode());
+                            } else {
+                                Log.d(LOG_TAG, "Uh-oh, PutDataRequest wasn't successful. " +
+                                        "Status Code : " + dataItemResult.getStatus().getStatusCode());
+                            }
+                            if(mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+                                mGoogleApiClient.disconnect();
+                            }
+                        }
+                    });
+
+            cursor.close();
+        }
+
+    }
+
+
+
+
 
 }

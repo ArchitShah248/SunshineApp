@@ -215,5 +215,10 @@
     <!-- Strings related to Muzei Source -->
     <string name="muzei_description">Today\'s weather</string>
 
-
+    <!-- This string path is used for DataItems using the DataLayer API between mobile and wearable -->
+    <string name="data_path" translatable="false">/weather_master_archit</string>
+    <string name="time_key" translatable="false">time</string>
+    <string name="high_key" translatable="false">highTemp</string>
+    <string name="low_key" translatable="false">lowTemp</string>
+    <string name="asset_key" translatable="false">assetDataMap</string>
 </resources>

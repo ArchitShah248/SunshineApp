@@ -5,4 +5,10 @@
     <dimen name="digital_x_offset">15dp</dimen>
     <dimen name="digital_x_offset_round">25dp</dimen>
     <dimen name="digital_y_offset">90dp</dimen>
+    <dimen name="digital_rect_dimen">50dp</dimen>
+    <dimen name="digital_margin_from_centre">16dp</dimen>
+    <dimen name="digital_gap_temp">10dp</dimen>
+    <dimen name="text_size_high_temp">24sp</dimen>
+    <dimen name="text_size_low_temp">18sp</dimen>
+    <dimen name="text_size_date">12sp</dimen>
 </resources>
