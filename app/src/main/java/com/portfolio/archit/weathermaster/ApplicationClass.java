@@ -1,6 +1,6 @@
 package com.portfolio.archit.weathermaster;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
 import com.portfolio.archit.weathermaster.data.AppConstants;
@@ -8,7 +8,7 @@ import com.portfolio.archit.weathermaster.data.AppConstants;
 /**
  * Created by Archit Shah on 8/27/2016.
  */
-public class ApplicationClass extends Application {
+public class ApplicationClass extends MultiDexApplication {
 
     @Override
     public void onCreate() {
