@@ -22,14 +22,14 @@ This app was developed as part of the Udacity course on Android development. Thi
 Screenshots
 -----------
 
-<img width="45%" src="screenshots/screen1.png" />
-<img width="45%" src="screenshots/screen2.png" />
+<img width="30%" src="screenshots/image1.png" />
+<img width="50%" src="screenshots/image2.png" />
 
-<img width="89%" src="screenshots/screen3.png" />
+<img width="35%" src="screenshots/image3.png" />
 
-<img width="90%" src="screenshots/screen4.png" />
-<img width="90%" src="screenshots/screen5.png" />
-<img width="90%" src="screenshots/screen6.png" />
+<img width="50%" src="screenshots/image4.png" />
+<img width="25%" src="screenshots/image5.png" />
+<img width="20%" src="screenshots/image6.png" />
 
 Developer setup
 ---------------
