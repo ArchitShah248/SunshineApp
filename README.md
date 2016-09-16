@@ -3,16 +3,17 @@
 
 A simple Android app, that helps user to monitor weather. App automatically synchronizes after certain time interval and gives weather forecast for the next 14 days. Including High / Low temperatures, humidity levels, wind speed and atmospheric pressure. You can share weather information to your near ones using available mailing apps or messaging apps. It also has the support of ANdroid Wear. You can set wear watchface and get updates from your app to werable device.
 
+
 A great companion to your everyday weather needs. 
-This app was developed as part of the Udacity course on Android development.
+This app was developed as part of the Udacity course on Android development. This app is built upon advance concepts and features provided by Android framework. This app is very useful for understanding advance Android fundamentals.
 
 **Features:**
 
 - Monitor daily weather info along with High / Low temperatures, humidity levels, wind speed and atmospheric pressure
 - Uses Open Weather API for getting weather information
-- Uses ContentProvider, Cursorloader, SyncAdapter for syncing data
+- Uses GCM, ContentProvider, Cursorloader, SyncAdapter for syncing data
 - Ability to share the weather forecast with your friends and family via your own messaging / email apps.
-- Applied material design concepts - Parrellex effect,Recyclerview, Ripple effect, Cardview, Screen transition, Object Animation
+- Applied material design concepts - Parallax effect,Recyclerview, Ripple effect, Cardview, Screen transition, Object Animation
 - User can select desired location using postal code / map
 - Widget support
 - Phone and tablet resolution support
@@ -53,4 +54,4 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[1]: https://www.themoviedb.org/documentation/api
+[1]: https://home.openweathermap.org/users/sign_up
