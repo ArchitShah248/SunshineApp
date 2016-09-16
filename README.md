@@ -3,7 +3,7 @@
 
 A simple Android app, that helps user to monitor weather. App automatically synchronizes after certain time interval and gives weather forecast for the next 14 days. Including High / Low temperatures, humidity levels, wind speed and atmospheric pressure. You can share weather information to your near ones using available mailing apps or messaging apps. It also has the support of ANdroid Wear. You can set wear watchface and get updates from your app to werable device.
 
-
+[]( []() )
 A great companion to your everyday weather needs. 
 This app was developed as part of the Udacity course on Android development. This app is built upon advance concepts and features provided by Android framework. This app is very useful for understanding advance Android fundamentals.
 
@@ -18,6 +18,18 @@ This app was developed as part of the Udacity course on Android development. Thi
 - Widget support
 - Phone and tablet resolution support
 - Android wearble support for Square and Round watchfaces
+
+Screenshots
+-----------
+
+<img width="45%" src="screenshots/screen1.png" />
+<img width="45%" src="screenshots/screen2.png" />
+
+<img width="89%" src="screenshots/screen3.png" />
+
+<img width="90%" src="screenshots/screen4.png" />
+<img width="90%" src="screenshots/screen5.png" />
+<img width="90%" src="screenshots/screen6.png" />
 
 Developer setup
 ---------------
