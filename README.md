@@ -17,7 +17,7 @@ This app was developed as part of the Udacity course on Android development. Thi
 - User can select desired location using postal code / map
 - Widget support
 - Phone and tablet resolution support
-- Android wearble support for Square and Round watchfaces
+- Android wearable support for Square and Round watch-faces
 
 Screenshots
 -----------
